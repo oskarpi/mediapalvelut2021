@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import './App.css';
 import MediaTable from './components/MediaTable';
 

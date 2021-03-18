@@ -20,6 +20,6 @@ const MediaRow = ({file}) => {
 
 MediaRow.propTypes = {
   file: PropTypes.object,
-}
+};
 
 export default MediaRow;
