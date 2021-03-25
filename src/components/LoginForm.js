@@ -1,8 +1,20 @@
 import useLoginForm from '../hooks/LoginHooks';
+import {useLogin} from '../hooks/ApiHooks';
+import PropTypes from 'prop-types';
+import {withRouter} from 'react-router-dom';
 
-const LoginForm = () => {
-  const doLogin = () => {
-    console.log('kirjautumislomake lähtee');
+const LoginForm = ({history}) => {
+  const {postLogin} = useLogin();
+
+  const doLogin = async () => {
+    try {
+      const userData = await postLogin(inputs);
+      console.log('userData', userData);
+      localStorage.setItem('token', userData.token);
+      history.push('/home');
+    } catch (e) {
+      console.log('doLogin', e.message);
+    }
   };
 
   const {inputs, handleInputChange, handleSubmit} = useLoginForm(doLogin);
@@ -20,4 +32,8 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+LoginForm.propTypes = {
+  history: PropTypes.object,
+};
+
+export default withRouter(LoginForm);
