@@ -1,10 +1,28 @@
+/* eslint-disable max-len */
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
 
-const useAllMedia = () =>{
+// general function for fetching (options default value is empty object)
+const doFetch = async (url, options = {}) => {
+  const response = await fetch(url, options);
+  const json = await response.json();
+  if (json.error) {
+    // if API response contains error message (use Postman to get further details)
+    throw new Error(json.message + ': ' + json.error);
+  } else if (!response.ok) {
+    // if API response does not contain error message, but there is some other error
+    throw new Error('doFetch failed');
+  } else {
+    // if all goes well
+    return json;
+  }
+};
+
+
+const useAllMedia = () => {
   const [picArray, setPicArray] = useState([]);
 
-  useEffect(()=> {
+  useEffect(() => {
     const loadMedia = async () => {
       const response = await fetch(baseUrl + 'media');
       const files = await response.json();
@@ -23,23 +41,24 @@ const useAllMedia = () =>{
   return picArray;
 };
 
-const useSingleMedia = (id) => {
-  const [data, setData] = useState([]);
-  // TODO: fetch data from api
 
-  // TODO: useEffect
-  useEffect(()=> {
-    const loadMedia = async () => {
-      const response = await fetch(baseUrl + 'media/' +id);
-      const file = await response.json();
-      // console.log(files);
-
-      setData(file);
+const useUsers = () => {
+  const register = async (inputs) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
     };
-    loadMedia();
-  }, []);
-
-  return data;
+    try {
+      const response = await doFetch(baseUrl + 'users', fetchOptions);
+      console.log(response);
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+  return {register};
 };
 
-export {useAllMedia, useSingleMedia};
+export {useAllMedia, useUsers};
