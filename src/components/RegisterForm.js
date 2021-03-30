@@ -30,7 +30,7 @@ const RegisterForm = () => {
         value={inputs.email}/>
       <input name="full_name" onChange={handleInputChange}
         value={inputs.full_name}/>
-      <button>Tallenna</button>
+      <button>Rekisteröidy</button>
     </form>
   );
 };

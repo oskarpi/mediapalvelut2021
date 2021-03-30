@@ -79,7 +79,7 @@ const useUsers = () => {
       const response = await doFetch(baseUrl + 'users/user', fetchOptions);
       return response;
     } catch (e) {
-      console.error(e.message);
+      throw new Error(e.message);
     }
   };
 
