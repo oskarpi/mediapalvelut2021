@@ -67,7 +67,23 @@ const useUsers = () => {
       console.error(e.message);
     }
   };
-  return {postRegister, getUserAvailable};
+
+  const getUser = async (token) => {
+    const fetchOptions = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const response = await doFetch(baseUrl + 'users/user', fetchOptions);
+      return response;
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
+  return {postRegister, getUserAvailable, getUser};
 };
 
 const useLogin = () => {
@@ -89,5 +105,5 @@ const useLogin = () => {
   return {postLogin};
 };
 
-
 export {useAllMedia, useUsers, useLogin};
+
