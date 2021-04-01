@@ -1,9 +1,23 @@
 import useSignUpForm from '../hooks/RegisterHooks';
 import {useUsers} from '../hooks/ApiHooks';
 import {Grid, TextField, Typography, Button} from '@material-ui/core';
+import {useState} from 'react';
 
 const RegisterForm = () => {
   const {postRegister, getUserAvailable} = useUsers();
+  const [errors, setErrors] = useState({
+    username: false,
+    password: false,
+    email: false,
+    full_name: false,
+  });
+
+  const [helperTexts, setHelperTexts] = useState({
+    username: '',
+    password: 'salasana väärää muotoa',
+    email: 'sähköposti väärää muotoa',
+    full_name: 'vain kirjaimia kiitos',
+  });
 
   const doRegister = async () => {
     try {
@@ -15,6 +29,26 @@ const RegisterForm = () => {
       }
     } catch (e) {
       console.log(e.message);
+    }
+  };
+
+  const handleUserChange = async (event) => {
+    handleInputChange(event);
+    if (event.target.value.length > 2) {
+      const available = await getUserAvailable(event.target.value);
+      console.log('onko vapaana', available);
+      setErrors((errors)=>{
+        return {
+          ...errors,
+          username: !available,
+        };
+      });
+      setHelperTexts((helperTexts)=>{
+        return {
+          ...helperTexts,
+          username: available ? '' : 'tunnus on jo käytössä',
+        };
+      });
     }
   };
 
@@ -38,8 +72,10 @@ const RegisterForm = () => {
                 type="text"
                 name="username"
                 label="Username"
-                onChange={handleInputChange}
+                onChange={handleUserChange}
                 value={inputs.username}
+                error={errors.username}
+                helperText={helperTexts.username}
               />
             </Grid>
 
