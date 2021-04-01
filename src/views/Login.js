@@ -4,15 +4,15 @@ import {Button} from '@material-ui/core';
 import {useState} from 'react';
 
 const Login = () => {
-  const [toggle, seToggle] = useState(true);
+  const [toggle, setToggle] = useState(true);
 
   const showHide = () => {
-    seToggle(!toggle);
+    setToggle(!toggle);
   };
 
   return (
     <>
-      { toggle ? <LoginForm/> : <RegisterForm/>
+      { toggle ? <LoginForm/> : <RegisterForm setToggle={setToggle}/>
       }
       <Button onClick={showHide}>{ toggle ? 'or register' : 'or login'}</Button>
     </>
