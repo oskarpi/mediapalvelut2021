@@ -4,7 +4,13 @@ import {useLogin} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
 import {MediaContext} from '../contexts/MediaContext';
-import {Button, Grid, TextField, Typography} from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+} from '@material-ui/core';
+
 
 const LoginForm = ({history}) => {
   const [user, setUser] = useContext(MediaContext);
@@ -32,7 +38,9 @@ const LoginForm = ({history}) => {
         <Typography
           component="h1"
           variant="h2"
-          gutterBottom>Login</Typography>
+          gutterBottom
+          align='center'
+        >Login</Typography>
       </Grid>
       <Grid item xs={12}>
         <form onSubmit={handleSubmit}>

@@ -71,7 +71,9 @@ const RegisterForm = ({setToggle}) => {
         <Typography
           component="h1"
           variant="h2"
-          gutterBottom>Register</Typography>
+          gutterBottom
+          align='center'>
+          Register</Typography>
       </Grid>
       <Grid item xs={12}>
         <ValidatorForm onSubmit={handleSubmit}>

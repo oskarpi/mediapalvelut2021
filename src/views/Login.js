@@ -1,7 +1,8 @@
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import {Button} from '@material-ui/core';
+import {Button, Container} from '@material-ui/core';
 import {useState} from 'react';
+
 
 const Login = () => {
   const [toggle, setToggle] = useState(true);
@@ -12,9 +13,13 @@ const Login = () => {
 
   return (
     <>
-      { toggle ? <LoginForm/> : <RegisterForm setToggle={setToggle}/>
-      }
-      <Button onClick={showHide}>{ toggle ? 'or register' : 'or login'}</Button>
+      <Container maxWidth='sm'>
+        {toggle ? <LoginForm/> : <RegisterForm setToggle={setToggle}/>
+        }
+        <Button fullWidth onClick={showHide}>{toggle ?
+          'or register' :
+          'or login'}</Button>
+      </Container>
     </>
   );
 };
