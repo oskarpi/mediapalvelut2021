@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import {uploadUrl} from '../utils/variables';
 import {Link} from 'react-router-dom';
 
+// turha kommentti
 
 const MediaRow = ({file}) => {
   return (
