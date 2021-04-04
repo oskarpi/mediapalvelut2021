@@ -1,8 +1,7 @@
-// import {Link} from 'react-router-dom';
 import {useEffect, useContext} from 'react';
 import {useUsers} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {MediaContext} from '../contexts/MediaContext';
 import {
   AppBar,
@@ -20,6 +19,10 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
+  },
+  link: {
+    textDecoration: 'none',
+    color: 'black',
   },
 }));
 
@@ -51,17 +54,21 @@ const Nav = ({history}) => {
               TestApp
             </Typography>
             <Box m={1}>
-              <Button variant="contained" href="/home"><HomeIcon/>
-              Home</Button>
+              <Button variant="contained"><HomeIcon/>
+                <Link className={classes.link} to="/home">Home</Link></Button>
             </Box>
             <Box m={1}>
-              <Button variant="contained" href="/profile"><PersonIcon/>
-              Profile</Button>
+              <Button variant="contained"><PersonIcon/>
+                <Link className={classes.link} to="/profile">
+                  Profile</Link></Button>
             </Box>
             <Box m={1}>
               <Button variant="contained" color="secondary" href="/logout">
                 <ExitToAppIcon/>
-              Logout</Button>
+                <Link className={classes.link} style={{
+                  color: 'white',
+                }} to="/logout">
+                  Logout</Link></Button>
             </Box>
           </Toolbar>
         </AppBar>
@@ -70,7 +77,6 @@ const Nav = ({history}) => {
     </div>
   );
 };
-
 
 Nav.propTypes = {
   history: PropTypes.object,
