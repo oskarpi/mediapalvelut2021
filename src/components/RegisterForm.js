@@ -1,6 +1,6 @@
 import useSignUpForm from '../hooks/RegisterHooks';
 import {useUsers} from '../hooks/ApiHooks';
-import {Grid, TextField, Typography, Button} from '@material-ui/core';
+import {Grid, TextField, Typography, Button, Box} from '@material-ui/core';
 
 const RegisterForm = () => {
   const {postRegister, getUserAvailable} = useUsers();
@@ -24,10 +24,14 @@ const RegisterForm = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography
-          component="h1"
-          variant="h2"
-          gutterBottom>Register</Typography>
+        <Box m={2}>
+          <Typography
+            component="h1"
+            variant="h2"
+            gutterBottom
+            align='center'
+          >Register</Typography>
+        </Box>
       </Grid>
       <Grid item xs={12}>
         <form onSubmit={handleSubmit}>
@@ -65,15 +69,19 @@ const RegisterForm = () => {
               />
             </Grid>
 
-            <Grid container item>
-              <TextField
-                fullWidth
-                type="text"
-                name="full_name"
-                label="Full name"
-                onChange={handleInputChange}
-                value={inputs.full_name}
-              />
+            <Grid container item style={{
+              display: 'block',
+            }}>
+              <Box mb={3}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  name="full_name"
+                  label="Full name"
+                  onChange={handleInputChange}
+                  value={inputs.full_name}
+                />
+              </Box>
             </Grid>
 
             <Grid container item>
