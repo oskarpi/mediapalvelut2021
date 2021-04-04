@@ -1,6 +1,6 @@
 import useSignUpForm from '../hooks/RegisterHooks';
 import {useUsers} from '../hooks/ApiHooks';
-import {Grid, Typography, Button} from '@material-ui/core';
+import {Grid, Typography, Button, Box} from '@material-ui/core';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {useEffect} from 'react';
 import PropTypes from 'prop-types';
@@ -68,19 +68,24 @@ const RegisterForm = ({setToggle}) => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography
-          component="h1"
-          variant="h2"
-          gutterBottom
-          align='center'>
+        <Box m={2}>
+          <Typography
+            component="h1"
+            variant="h2"
+            align='center'>
           Register</Typography>
+        </Box>
       </Grid>
       <Grid item xs={12}>
         <ValidatorForm onSubmit={handleSubmit}>
-          <Grid container>
-            <Grid container item>
+          <Grid container >
+            <Grid container item style={{
+              display: 'block',
+            }}>
               <TextValidator
-                fullWidth
+                style={{
+                  width: '100%',
+                }}
                 type="text"
                 name="username"
                 label="Username"
@@ -91,7 +96,9 @@ const RegisterForm = ({setToggle}) => {
               />
             </Grid>
 
-            <Grid container item>
+            <Grid container item style={{
+              display: 'block',
+            }}>
               <TextValidator
                 fullWidth
                 type="password"
@@ -104,7 +111,9 @@ const RegisterForm = ({setToggle}) => {
               />
             </Grid>
 
-            <Grid container item>
+            <Grid container item style={{
+              display: 'block',
+            }}>
               <TextValidator
                 fullWidth
                 type="password"
@@ -117,7 +126,9 @@ const RegisterForm = ({setToggle}) => {
               />
             </Grid>
 
-            <Grid container item>
+            <Grid container item style={{
+              display: 'block',
+            }}>
               <TextValidator
                 fullWidth
                 type="email"
@@ -130,20 +141,26 @@ const RegisterForm = ({setToggle}) => {
               />
             </Grid>
 
-            <Grid container item>
-              <TextValidator
-                fullWidth
-                type="text"
-                name="full_name"
-                label="Full name"
-                onChange={handleInputChange}
-                value={inputs.full_name}
-                validators={validators.full_name}
-                errorMessages={errorMessages.full_name}
-              />
+            <Grid container item style={{
+              display: 'block',
+            }}>
+              <Box mb={3}>
+                <TextValidator
+                  fullWidth
+                  type="text"
+                  name="full_name"
+                  label="Full name"
+                  onChange={handleInputChange}
+                  value={inputs.full_name}
+                  validators={validators.full_name}
+                  errorMessages={errorMessages.full_name}
+                />
+              </Box>
             </Grid>
 
-            <Grid container item>
+            <Grid container item style={{
+              display: 'block',
+            }}>
               <Button fullWidth
                 color="primary"
                 type="submit"

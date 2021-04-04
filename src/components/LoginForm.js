@@ -7,7 +7,7 @@ import {MediaContext} from '../contexts/MediaContext';
 import {
   Button,
   Grid,
-  TextField,
+  TextField, Box,
   Typography,
 } from '@material-ui/core';
 
@@ -35,12 +35,14 @@ const LoginForm = ({history}) => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography
-          component="h1"
-          variant="h2"
-          gutterBottom
-          align='center'
-        >Login</Typography>
+        <Box m={2}>
+          <Typography
+            component="h1"
+            variant="h2"
+            gutterBottom
+            align='center'
+          >Login</Typography>
+        </Box>
       </Grid>
       <Grid item xs={12}>
         <form onSubmit={handleSubmit}>
@@ -56,14 +58,18 @@ const LoginForm = ({history}) => {
               />
             </Grid>
             <Grid container item>
-              <TextField
-                fullWidth
-                type="password"
-                name="password"
-                label="Password"
-                onChange={handleInputChange}
-                value={inputs.password}
-              />
+              <Box mb={3} style={{
+                width: '100%',
+              }}>
+                <TextField
+                  fullWidth
+                  type="password"
+                  name="password"
+                  label="Password"
+                  onChange={handleInputChange}
+                  value={inputs.password}
+                />
+              </Box>
             </Grid>
 
             <Grid container item>

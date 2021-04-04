@@ -4,16 +4,17 @@ import {
   Card,
   CardActionArea, CardContent, CardMedia,
   makeStyles,
-  Paper,
   Typography,
+  Container, Box,
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 800,
+    minWidth: 500,
   },
   media: {
-    height: 140,
+    height: 300,
   },
 });
 
@@ -24,25 +25,33 @@ const Single = ({location}) => {
 
   return (
     <>
-      <Typography
-        component="h1"
-        variant="h2"
-        gutterBottom>
-        {file.title}</Typography>
-      <Paper elevation="3">
-        <Card className={classes.root}>
-          <CardActionArea>
-            <CardMedia className={classes.media}
-              image={uploadUrl + file.filename} title={file.title}/>
-          </CardActionArea>
-          <CardContent>
-            <Typography gutterBottom>{file.description}</Typography>
-            <Typography variant="subtitle2">{file.user_id}</Typography>
-          </CardContent>
-        </Card>
-      </Paper>
+      <Container>
+        <Box style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}>
+          <Card className={classes.root}>
+            <CardActionArea>
+              <CardMedia className={classes.media}
+                image={uploadUrl + file.filename} title={file.title}/>
+            </CardActionArea>
+            <CardContent>
+              <Typography
+                component="h1"
+                variant="h4"
+                gutterBottom>
+                {file.title}</Typography>
+              <Typography gutterBottom>{file.description}</Typography>
+              <Typography variant="subtitle2">{file.user_id}</Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Container>
     </>
-  );
+  )
+  ;
 };
 
 Single.propTypes = {

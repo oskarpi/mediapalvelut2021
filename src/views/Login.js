@@ -1,6 +1,6 @@
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import {Button, Container} from '@material-ui/core';
+import {Button, Container, Box} from '@material-ui/core';
 import {useState} from 'react';
 
 
@@ -16,9 +16,12 @@ const Login = () => {
       <Container maxWidth='sm'>
         {toggle ? <LoginForm/> : <RegisterForm setToggle={setToggle}/>
         }
-        <Button fullWidth onClick={showHide}>{toggle ?
+        <Box mt={1}>
+          <Button color='primary' variant='outlined' fullWidth
+            onClick={showHide}>{toggle ?
           'or register' :
           'or login'}</Button>
+        </Box>
       </Container>
     </>
   );
