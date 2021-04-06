@@ -105,5 +105,28 @@ const useLogin = () => {
   return {postLogin};
 };
 
-export {useAllMedia, useUsers, useLogin};
+const useMedia = () => {
+  const [loading, setLoading] = useState(false);
+  const postMedia = async (fd, token) =>{
+    setLoading(true);
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+      },
+      body: fd,
+    };
+    try {
+      const response = await doFetch(baseUrl + 'media', fetchOptions);
+      return response;
+    } catch (e) {
+      throw new Error('upload failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+  return {postMedia, loading};
+};
+
+export {useAllMedia, useUsers, useLogin, useMedia};
 

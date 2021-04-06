@@ -13,6 +13,8 @@ import {
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PublishIcon from '@material-ui/icons/Publish';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import {makeStyles} from '@material-ui/core/styles';
 
 
@@ -47,7 +49,6 @@ const Nav = ({history}) => {
   return (
     <div className={classes.root}>
       <nav>
-        {user &&
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
@@ -55,24 +56,39 @@ const Nav = ({history}) => {
             </Typography>
             <Box m={1}>
               <Button variant="contained"><HomeIcon/>
-                <Link className={classes.link} to="/home">Home</Link></Button>
+                <Link className={classes.link} to="/">Home</Link></Button>
             </Box>
-            <Box m={1}>
-              <Button variant="contained"><PersonIcon/>
-                <Link className={classes.link} to="/profile">
-                  Profile</Link></Button>
-            </Box>
-            <Box m={1}>
-              <Button variant="contained" color="secondary" href="/logout">
-                <ExitToAppIcon/>
-                <Link className={classes.link} style={{
-                  color: 'white',
-                }} to="/logout">
-                  Logout</Link></Button>
-            </Box>
+            {user &&
+            <>
+              <Box m={1}>
+                <Button variant="contained"><PersonIcon/>
+                  <Link className={classes.link} to="/profile">
+                    Profile</Link></Button>
+              </Box>
+              <Box m={1}>
+                <Button variant="contained"><PublishIcon/>
+                  <Link className={classes.link} to="/upload">
+                    Upload</Link></Button>
+              </Box>
+            </>
+            }
+            {user ?
+              <Box m={1}>
+                <Button variant="contained" color="secondary" href="/logout">
+                  <ExitToAppIcon/>
+                  <Link className={classes.link} style={{
+                    color: 'white',
+                  }} to="/logout">
+                    Logout</Link></Button>
+              </Box> :
+              <Box m={1}>
+                <Button variant="contained"><MeetingRoomIcon/>
+                  <Link className={classes.link}
+                    to="/login">Login</Link></Button>
+              </Box>
+            }
           </Toolbar>
         </AppBar>
-        }
       </nav>
     </div>
   );
