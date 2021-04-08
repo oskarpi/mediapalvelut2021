@@ -7,6 +7,9 @@ import {
   Typography,
   Container, Box,
 } from '@material-ui/core';
+import BackButton from '../components/BackButton';
+import {useUsers} from '../hooks/ApiHooks';
+import {useEffect, useState} from 'react';
 
 const useStyles = makeStyles({
   root: {
@@ -20,12 +23,25 @@ const useStyles = makeStyles({
 
 
 const Single = ({location}) => {
+  const [owner, setOwner] = useState(null);
+
   const classes = useStyles();
+  const {getUserById} = useUsers();
+
   const file = location.state;
+  const desc = JSON.parse(file.description);
+
+  useEffect(()=>{
+    (async ()=>{
+      setOwner(await getUserById(localStorage.getItem('token'),
+          file.user_id));
+    })();
+  }, []);
 
   return (
     <>
       <Container>
+        <BackButton/>
         <Box style={{
           position: 'absolute',
           left: '50%',
@@ -35,7 +51,17 @@ const Single = ({location}) => {
           <Card className={classes.root}>
             <CardActionArea>
               <CardMedia className={classes.media}
-                image={uploadUrl + file.filename} title={file.title}/>
+                image={uploadUrl + file.filename}
+                title={file.title}
+                style={{
+                  filter: `
+                        brightness(${desc.filters.brightness}%)
+                        contrast(${desc.filters.contrast}%)
+                        saturate(${desc.filters.saturate}%)
+                        sepia(${desc.filters.sepia}%)
+                        `,
+                }}
+              />
             </CardActionArea>
             <CardContent>
               <Typography
@@ -43,8 +69,8 @@ const Single = ({location}) => {
                 variant="h4"
                 gutterBottom>
                 {file.title}</Typography>
-              <Typography gutterBottom>{file.description}</Typography>
-              <Typography variant="subtitle2">{file.user_id}</Typography>
+              <Typography gutterBottom>{desc.description}</Typography>
+              <Typography variant="subtitle2">{owner?.username}</Typography>
             </CardContent>
           </Card>
         </Box>

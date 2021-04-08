@@ -6,6 +6,7 @@ import {
   Typography,
   makeStyles, Container, Box,
 } from '@material-ui/core';
+import BackButton from '../components/BackButton';
 
 const useStyles = makeStyles({
   root: {
@@ -20,6 +21,7 @@ const Profile = () => {
   return (
     <>
       <Container>
+        <BackButton/>
         <Box display='flex' justifyContent='center' m={2}>
           <Typography variant="h3" component="h1">
             Profile

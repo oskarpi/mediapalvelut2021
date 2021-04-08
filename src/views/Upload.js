@@ -1,27 +1,48 @@
 import useUploadForm from '../hooks/UploadHooks';
-import {useMedia} from '../hooks/ApiHooks';
+import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
   CircularProgress,
   Button,
   Grid,
   Typography,
-  Container, Box,
+  Container, Box, Slider,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {useEffect} from 'react';
+import useSlider from '../hooks/SliderHooks';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import BackButton from '../components/BackButton';
 
 const Upload = ({history}) => {
   const {postMedia, loading} = useMedia();
+  const {postTag} = useTag();
+
+  const validators = {
+    tittle: ['required', 'minStringLength: 3'],
+    // eslint-disable-next-line max-len
+    description: ['minStringLength: 5'],
+  };
+
+  const errorMessages={
+    tittle: ['vaadittu kenttä', 'vähintään 3 merkkiä'],
+    description: ['vähintään 5 merkkiä'],
+  };
 
   const doUpload = async () => {
     try {
       const fd = new FormData();
       fd.append('title', inputs.title);
-      fd.append('description', inputs.description);
+      // kuvaus + filtterit tallennetaan description kenttään
+      const desc = {
+        description: inputs.description,
+        filters: sliderInputs,
+      };
+      fd.append('description', JSON.stringify(desc));
       fd.append('file', inputs.file);
       const result = await postMedia(fd, localStorage.getItem('token'));
-      console.log('doUpload', result);
+      const tagResult = await postTag(localStorage.getItem('token'),
+          result.file_id);
+      console.log('doUpload', result, tagResult);
     } catch (e) {
       alert(e.message);
     } finally {
@@ -35,6 +56,13 @@ const Upload = ({history}) => {
       description: '',
       file: null,
     });
+
+  const [sliderInputs, handleSliderChange] = useSlider({
+    brightness: '100',
+    contrast: '100',
+    saturate: '100',
+    sepia: '0',
+  });
 
   useEffect(() => {
     const reader = new FileReader();
@@ -56,12 +84,13 @@ const Upload = ({history}) => {
         }));
       }
     }
-  }, [inputs]);
+  }, [inputs.file]);
 
-  console.log(inputs);
+  console.log(inputs, sliderInputs);
 
   return (
     <Container>
+      <BackButton/>
       <Grid container justify="center">
         <Grid item xs={12}>
           <Box m={2}>
@@ -74,14 +103,7 @@ const Upload = ({history}) => {
           </Box>
         </Grid>
 
-        {inputs.dataUrl?.length > 0 &&
-      <Grid item xs={12} style={{
-        display: 'flex',
-        justifyContent: 'center',
-      }}>
-        <img src={inputs.dataUrl}/>
-      </Grid>
-        }
+
         <Grid item>
           {!loading ?
           <ValidatorForm onSubmit={handleSubmit}>
@@ -95,6 +117,8 @@ const Upload = ({history}) => {
                   value={inputs.tittle}
                   fullWidth
                   onChange={handleInputChange}
+                  validators={validators.tittle}
+                  errorMessages={errorMessages.tittle}
                 />
               </Grid>
               <Grid container item style={{
@@ -106,6 +130,8 @@ const Upload = ({history}) => {
                   value={inputs.description}
                   fullWidth
                   onChange={handleInputChange}
+                  validators={validators.description}
+                  errorMessages={errorMessages.description}
                 />
               </Grid>
               <Grid container item style={{
@@ -131,6 +157,72 @@ const Upload = ({history}) => {
                   >Upload</Button>
                 </Box>
               </Grid>
+              {inputs.dataUrl?.length > 0 &&
+                <>
+                  <Grid item xs={12} style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}>
+                    <img
+                      src={inputs.dataUrl}
+                      style={{
+                        filter: `
+                        brightness(${sliderInputs.brightness}%)
+                        contrast(${sliderInputs.contrast}%)
+                        saturate(${sliderInputs.saturate}%)
+                        sepia(${sliderInputs.sepia}%)
+                        `,
+                      }}
+                    />
+                  </Grid>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <Typography>Brightness</Typography>
+                      <Slider
+                        min={0}
+                        max={200}
+                        step={1}
+                        name="brightness"
+                        value={sliderInputs?.brightness}
+                        onChange={handleSliderChange}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography>Contrast</Typography>
+                      <Slider
+                        min={0}
+                        max={200}
+                        step={1}
+                        name="contrast"
+                        value={sliderInputs?.contrast}
+                        onChange={handleSliderChange}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography>Saturation</Typography>
+                      <Slider
+                        min={0}
+                        max={200}
+                        step={1}
+                        name="saturate"
+                        value={sliderInputs?.saturate}
+                        onChange={handleSliderChange}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography>Sepia</Typography>
+                      <Slider
+                        min={0}
+                        max={100}
+                        step={1}
+                        name="sepia"
+                        value={sliderInputs?.sepia}
+                        onChange={handleSliderChange}
+                      />
+                    </Grid>
+                  </Grid>
+                </>
+              }
             </Grid>
           </ValidatorForm> :
           <CircularProgress/>
