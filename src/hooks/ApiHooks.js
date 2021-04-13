@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import {useEffect, useState} from 'react';
 import {appIndentifier, baseUrl} from '../utils/variables';
+import {useContext} from 'react';
+import {MediaContext} from '../contexts/MediaContext';
 
 // general function for fetching (options default value is empty object)
 const doFetch = async (url, options = {}) => {
@@ -19,7 +21,8 @@ const doFetch = async (url, options = {}) => {
 };
 
 
-const useAllMedia = () => {
+const useAllMedia = (ownFiles) => {
+  const [user] = useContext(MediaContext);
   const [picArray, setPicArray] = useState([]);
 
   useEffect(() => {
@@ -28,12 +31,18 @@ const useAllMedia = () => {
       const files = await response.json();
       // console.log(files);
 
-      const media = await Promise.all(files.map(async (item) => {
+      let allFiles = await Promise.all(files.map(async (item) => {
         const resp = await fetch(baseUrl + 'media/' + item.file_id);
         return resp.json();
       }));
 
-      setPicArray(media);
+      if (ownFiles) {
+        allFiles = allFiles.filter((item) =>{
+          return item.user_id === user.user_id;
+        });
+      };
+
+      setPicArray(allFiles);
     };
     loadMedia();
   }, []);
@@ -140,7 +149,44 @@ const useMedia = () => {
       setLoading(false);
     }
   };
-  return {postMedia, loading};
+  const putMedia = async (data, id, token) =>{
+    setLoading(true);
+    const fetchOptions = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      const response = await doFetch(baseUrl + 'media/' +id, fetchOptions);
+      return response;
+    } catch (e) {
+      throw new Error('modify failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteMedia = async (id, token) =>{
+    setLoading(true);
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const response = await doFetch(baseUrl + 'media/' +id, fetchOptions);
+      return response;
+    } catch (e) {
+      throw new Error('delete failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+  return {postMedia, loading, putMedia, deleteMedia};
 };
 
 const useTag = () => {
@@ -166,6 +212,7 @@ const useTag = () => {
   };
   return {postTag};
 };
+
 
 export {useAllMedia, useUsers, useLogin, useMedia, useTag};
 

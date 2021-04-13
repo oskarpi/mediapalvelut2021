@@ -1,10 +1,11 @@
 import {useContext} from 'react';
 import {MediaContext} from '../contexts/MediaContext';
+import {Link as RouterLink} from 'react-router-dom';
 import {
   Card,
   CardContent,
   Typography,
-  makeStyles, Container, Box,
+  makeStyles, Container, Box, Button,
 } from '@material-ui/core';
 import BackButton from '../components/BackButton';
 
@@ -45,6 +46,9 @@ const Profile = () => {
               <Typography variant="body2" component="p">
                 {user.username}
               </Typography>
+              <Button component={RouterLink}
+                to="/myfiles"
+              >My Files</Button>
             </CardContent>
           </Card>
         </Box>

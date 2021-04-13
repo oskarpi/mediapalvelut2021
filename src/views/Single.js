@@ -33,10 +33,16 @@ const Single = ({location}) => {
 
   useEffect(()=>{
     (async ()=>{
-      setOwner(await getUserById(localStorage.getItem('token'),
-          file.user_id));
+      try {
+        setOwner(await getUserById(localStorage.getItem('token'),
+            file.user_id));
+      } catch (e) {
+        console.log(e.message);
+      }
     })();
   }, []);
+
+  if (file.media_type === 'image') file.media_type = 'img';
 
   return (
     <>
@@ -50,7 +56,10 @@ const Single = ({location}) => {
         }}>
           <Card className={classes.root}>
             <CardActionArea>
-              <CardMedia className={classes.media}
+              <CardMedia
+                component={file.media_type}
+                controls
+                className={classes.media}
                 image={uploadUrl + file.filename}
                 title={file.title}
                 style={{

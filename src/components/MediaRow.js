@@ -9,6 +9,8 @@ import {
   makeStyles,
   Typography, Button, Box, Grid,
 } from '@material-ui/core';
+import {useMedia} from '../hooks/ApiHooks';
+import {withRouter} from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -23,8 +25,9 @@ const useStyles = makeStyles({
   },
 });
 
-const MediaRow = ({file}) => {
+const MediaRow = ({file, ownFiles, history}) => {
   const classes = useStyles();
+  const {deleteMedia} = useMedia();
   return (
     <Grid item xs={4}>
       <Card className={classes.root}>
@@ -53,15 +56,42 @@ const MediaRow = ({file}) => {
             }
             >View</Link>
           </Button>
+          <Button color='primary' variant='contained'>
+            <Link className={classes.link} to={
+              {
+                pathname: '/modify',
+                state: file,
+              }
+            }
+            >modify</Link>
+          </Button>
+          <Button color='secondary' variant='contained'
+            onClick={()=>{
+              try {
+                const conf = confirm('Do you really want to delete?');
+                if (conf) {
+                  deleteMedia(file.file_id, localStorage.getItem('token'));
+                  history.push('/profile');
+                }
+              } catch (e) {
+                console.log(e.message);
+              }
+            }
+            }
+          >
+            <Link className={classes.link}
+            >Delete</Link>
+          </Button>
         </CardContent>
       </Card>
     </Grid>
-
   );
 };
 
 MediaRow.propTypes = {
   file: PropTypes.object,
+  ownFiles: PropTypes.bool,
+  history: PropTypes.object,
 };
 
-export default MediaRow;
+export default withRouter(MediaRow);

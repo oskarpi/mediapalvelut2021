@@ -18,13 +18,13 @@ const Upload = ({history}) => {
   const {postTag} = useTag();
 
   const validators = {
-    tittle: ['required', 'minStringLength: 3'],
+    title: ['required', 'minStringLength: 3'],
     // eslint-disable-next-line max-len
     description: ['minStringLength: 5'],
   };
 
   const errorMessages={
-    tittle: ['vaadittu kenttä', 'vähintään 3 merkkiä'],
+    title: ['vaadittu kenttä', 'vähintään 3 merkkiä'],
     description: ['vähintään 5 merkkiä'],
   };
 
@@ -55,6 +55,7 @@ const Upload = ({history}) => {
       title: '',
       description: '',
       file: null,
+      dataUrl: '',
     });
 
   const [sliderInputs, handleSliderChange] = useSlider({
@@ -112,13 +113,13 @@ const Upload = ({history}) => {
                 display: 'block',
               }}>
                 <TextValidator
-                  name="tittle"
-                  label="Tittle"
-                  value={inputs.tittle}
+                  name="title"
+                  label="Title"
+                  value={inputs.title}
                   fullWidth
                   onChange={handleInputChange}
-                  validators={validators.tittle}
-                  errorMessages={errorMessages.tittle}
+                  validators={validators.title}
+                  errorMessages={errorMessages.title}
                 />
               </Grid>
               <Grid container item style={{

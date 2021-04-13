@@ -1,8 +1,8 @@
-import MediaTable from '../components/MediaTable';
 import {Box, Container, Typography} from '@material-ui/core';
+import MediaTable from '../components/MediaTable';
 
 
-const Home = () => {
+const MyFiles = () => {
   return (
     <>
       <Container>
@@ -11,12 +11,12 @@ const Home = () => {
             component="h1"
             variant="h3"
             gutterBottom>
-              Home</Typography>
+            My files</Typography>
         </Box>
-        <MediaTable ownFiles={false}/>
+        <MediaTable ownFiles={true}/>
       </Container>
     </>
   );
 };
 
-export default Home;
+export default MyFiles;
