@@ -1,13 +1,16 @@
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {MediaContext} from '../contexts/MediaContext';
 import {Link as RouterLink} from 'react-router-dom';
 import {
   Card,
   CardContent,
   Typography,
-  makeStyles, Container, Box, Button,
+  makeStyles, Container, Box, Button, Grid, CardMedia,
 } from '@material-ui/core';
 import BackButton from '../components/BackButton';
+import ProfileForm from '../components/ProfileForm';
+import {useTag} from '../hooks/ApiHooks';
+import {uploadUrl} from '../utils/variables';
 
 const useStyles = makeStyles({
   root: {
@@ -17,7 +20,26 @@ const useStyles = makeStyles({
 
 const Profile = () => {
   const classes = useStyles();
-  const [user] = useContext(MediaContext);
+  const [user, setUser] = useContext(MediaContext);
+  const [update, setUpdate] = useState(false);
+  const [avatar, setAvatar] = useState('logo512.png');
+  const {getTag} = useTag();
+
+  useEffect(()=>{
+    (async () =>{
+      try {
+        const result = await getTag('avatar_'+user.user_id);
+        if (result.length > 0) {
+          const image = result.pop().filename;
+          setAvatar(uploadUrl + image);
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+    })();
+  }, [user, update]);
+
+  console.log(avatar);
 
   return (
     <>
@@ -29,13 +51,13 @@ const Profile = () => {
           </Typography>
         </Box>
         {user &&
-        <Box style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}>
           <Card className={classes.root}>
+            <CardMedia
+              image={avatar}
+              style={{
+                height: '20vh',
+              }}
+            />
             <CardContent>
               <Typography variant="body2" component="p">
                 {user.full_name}
@@ -51,8 +73,10 @@ const Profile = () => {
               >My Files</Button>
             </CardContent>
           </Card>
-        </Box>
         }
+        <Grid>
+          <ProfileForm user={user} setUser={setUser} setUpdate={setUpdate}/>
+        </Grid>
       </Container>
     </>
   );
